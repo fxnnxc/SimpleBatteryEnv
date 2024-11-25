@@ -47,7 +47,7 @@ class PPOTrainer:
         
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = ActorCritic(self.state_dim, self.action_dim).to(self.device)
-        self.optimizer = optim.Adam(self.model.parameters(), lr=3e-4)
+        self.optimizer = optim.Adam(self.model.parameters(), lr=1e-3)
         
         # PPO hyperparameters
         self.clip_epsilon = 0.2
@@ -172,7 +172,7 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     
-    parser.add_argument('--coef_battery_consumption', type=float, default=0.050)
+    parser.add_argument('--coef_battery_consumption', '-b', type=float, default=0.050)
     args = parser.parse_args()
     import os 
     base_path = os.path.join("outputs", f"battery_consumption_{args.coef_battery_consumption:.4f}")
@@ -184,7 +184,7 @@ if __name__ == "__main__":
     
     # Create and train PPO agent
     trainer = PPOTrainer(env)
-    rewards = trainer.train(num_episodes=1000)
+    rewards = trainer.train(num_episodes=100000)
     
     # Plot results
     plot_training_results(rewards, base_path)
