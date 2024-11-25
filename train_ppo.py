@@ -5,6 +5,7 @@ from torch.distributions import Categorical
 import numpy as np
 from simpleEnv import BatteryEfficientNavEnv
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 class ActorCritic(nn.Module):
     def __init__(self, state_dim, action_dim):
@@ -118,7 +119,7 @@ class PPOTrainer:
     def train(self, num_episodes=1000):
         episode_rewards = []
         
-        for episode in range(num_episodes):
+        for episode in tqdm(range(num_episodes)):
             # Collect trajectories
             states, actions, rewards, values, log_probs, dones, final_value, episode_reward = \
                 self.collect_trajectories(num_steps=200)
